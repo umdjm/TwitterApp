@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  userId: 1
+  statusId: 1
+  message: MyString
+  screenname: MyString
+  messageTime: 2012-10-20 14:05:29
+
+two:
+  userId: 1
+  statusId: 1
+  message: MyString
+  screenname: MyString
+  messageTime: 2012-10-20 14:05:29
