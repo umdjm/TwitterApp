@@ -1,4 +1,6 @@
 TwitterApp::Application.routes.draw do
+  resources :queries
+
   resources :tweets
 
   get "static_pages/home"

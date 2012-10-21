@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121020182723) do
+ActiveRecord::Schema.define(:version => 20121021160441) do
+
+  create_table "queries", :force => true do |t|
+    t.string   "q"
+    t.integer  "rpp"
+    t.string   "max_id"
+    t.integer  "page"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "tweets", :force => true do |t|
     t.string   "message"
@@ -21,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20121020182723) do
     t.datetime "updated_at",  :null => false
     t.string   "userId"
     t.string   "statusId"
+    t.integer  "query_id"
   end
 
 end

@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Q:</b>
+  <%= @query.q %>
+</p>
+
+<p>
+  <b>Rpp:</b>
+  <%= @query.rpp %>
+</p>
+
+<p>
+  <b>Max:</b>
+  <%= @query.max_id %>
+</p>
+
+<p>
+  <b>Page:</b>
+  <%= @query.page %>
+</p>
+
+
+<%= link_to 'Edit', edit_query_path(@query) %> |
+<%= link_to 'Back', queries_path %>
+
+<table>
+  <tr>
+    <th>From</th>
+    <th>Text</th>
+    <th>Time</th>
+  </tr>
+
+  <% @tweets.each do |tweet| %>
+      <tr>
+        <td><%= tweet["from_user"] %></td>
+        <td><%= tweet["text"] %></td>
+        <td><%= tweet["created_at"] %></td>
+      </tr>
+  <% end %>
+
+
+</table>

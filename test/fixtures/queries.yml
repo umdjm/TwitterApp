@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  q: 
+  rpp: 
+  max_id: 
+  page: 1
+
+two:
+  q: 
+  rpp: 
+  max_id: 
+  page: 1

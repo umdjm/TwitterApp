@@ -9,28 +9,7 @@ TweetStream.configure do |config|
   config.auth_method = :oauth
 end
 
-keyword   = 'detroit tigers'
-$last_tweet = DateTime.now
-last_checked = DateTime.now
-
-
-client = TweetStream::Client.new
-
-client.on_error do |message|
-  puts message
-end
-
-Thread.new do
-  client.track(keyword) do |status|
-    $last_tweet = DateTime.now
-    puts "#{status.user.screen_name}]: #{status.text} - #{status.created_at}"
-  end
-end
-
-loop do
-  sleep 10
-  if last_checked > $last_tweet 
-  	puts "status: active.  Time:" + DateTime.now.to_s
-  end
-  last_checked = DateTime.now
+TweetStream::Daemon.new.track("detroit tigers") do |status|
+   @tweet = Tweet.new( :message => status.text, :userId  => status.user.id, :screenname => status.user.screen_name, :message => status.text, :statusId => status.id, :messageTime => status.created_at)
+   @tweet.save
 end

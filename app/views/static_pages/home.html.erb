@@ -1,3 +1,5 @@
+
+MaxId: <%= @max_id %>, Results: <%= @tweets.count %>, Pages <%= @counter %>
 <table>
   <tr>
     <th>From</th>
@@ -7,9 +9,11 @@
 
   <% @tweets.each do |tweet| %>
       <tr>
-        <td><%= tweet.from_user %></td>
-        <td><%= tweet.text %></td>
-        <td><%= tweet.created_at %></td>
+        <td><%= tweet["from_user"] %></td>
+        <td><%= tweet["text"] %></td>
+        <td><%= tweet["created_at"] %></td>
       </tr>
   <% end %>
+
+
 </table>

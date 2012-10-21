@@ -1,17 +1,27 @@
+require 'rubygems'
 require 'open-uri'
 require 'json'
+require 'httparty'
+
 
 class StaticPagesController < ApplicationController
+  include ApplicationHelper
+
   def home
 
-    Twitter.configure do |config|
-      config.consumer_key = "VH3sMDaBmiK9036SxnlChw"
-      config.consumer_secret = "7tCaBbig0N6GRuwnb03x1sG2fTksRCzwsQF4LJZ0OU"
-      config.oauth_token = "230227822-DjaFQuVMRvezyj6hung3nwbSMcQmSJ5kdriciGI"
-      config.oauth_token_secret = "pBHtoOG5W5861NjEYmBmwAv3iilfEf5BvOkosJzIsY8"
+    @tweets = []
+    @response = TwitterSearch.search("Lakeside Software", 10)
+    @max_id = @response["max_id"]
+    @tweets += @response["results"]
+
+    2.upto(10) do |pagenum|
+      @response =  TwitterSearch.search("Lakeside Software", 10, @max_id, pagenum)
+
+      break if @response["results"].count == 0
+
+      @tweets += @response["results"]
+      @counter = pagenum
     end
 
-
-    @tweets = Twitter.search("to:justinbieber marry me", :count => 3, :result_type => "recent").results
   end
 end
