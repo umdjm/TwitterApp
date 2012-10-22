@@ -14,27 +14,35 @@ task :tweets => :environment do
   end
 
   keywords = "go blue"
-  client = TweetStream::Client.new
-  client.track(keywords) do |status|
-    begin
-      @tweet = Tweet.new( :message => status.text, :userId  => status.user.id, :screenname => status.user.screen_name, :message => status.text, :statusId => status.id, :messageTime => status.created_at)
-      if @tweet.save
-        puts @tweet.message
-      else
-        puts @tweet.errors[:name]
+
+  @query = Query.new(:page => 1, :q => keywords, :rpp => 100)
+  if @query.save
+    puts "Query:" + @query.q
+
+    client = TweetStream::Client.new
+    client.track(keywords) do |status|
+      begin
+        @tweet = @query.tweets.build(
+            :message => status.text,
+            :userId  => status.user.id,
+            :screenname => status.user.screen_name,
+            :message => status.text,
+            :statusId => status.id,
+            :messageTime => status.created_at
+        )
+        if @tweet.save
+          puts @tweet.message
+        else
+          puts @tweet.errors[:name]
+        end
+      rescue => e
+        puts e.message
       end
-    rescue => e
-      puts e.message
     end
-    if keywords == "go blue"
-      puts "now green"
-      keywords = "go green"
-    else
-      puts "now blue"
-      keywords = "go blue"
-    end
-    client.track(keywords)
+  else
+    puts @query.errors[:name]
   end
+
 
 end
 
