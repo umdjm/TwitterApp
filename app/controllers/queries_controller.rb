@@ -17,11 +17,6 @@ class QueriesController < ApplicationController
   def show
     @query = Query.find(params[:id])
 
-    @tweets = []
-    @response = TwitterSearch.search(@query.q, @query.rpp, @query.max_id, @query.page)
-    @max_id = @response["max_id"]
-    @tweets += @response["results"]
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @query }
@@ -48,6 +43,22 @@ class QueriesController < ApplicationController
   # POST /queries.json
   def create
     @query = Query.new(params[:query])
+
+    @response = TwitterSearch.search(@query.q, @query.rpp, @query.max_id, @query.page)
+    @query.max_id = @response["max_id"]
+
+    @tweets = []
+    @tweets += @response["results"]
+    @tweets.each do |tweet|
+      @t = @query.tweets.build(
+          :message => tweet["text"],
+          :messageTime => tweet["created_at"],
+          :screenname => tweet["from_user"],
+          :statusId => tweet["id"],
+          :userId => tweet["from_user_id"]
+      )
+    end
+
 
     respond_to do |format|
       if @query.save

@@ -31,11 +31,11 @@
     <th>Time</th>
   </tr>
 
-  <% @tweets.each do |tweet| %>
+  <% @query.tweets.each do |tweet| %>
       <tr>
-        <td><%= tweet["from_user"] %></td>
-        <td><%= tweet["text"] %></td>
-        <td><%= tweet["created_at"] %></td>
+        <td><%= tweet.screenname %></td>
+        <td><%= tweet.message %></td>
+        <td><%= tweet.messageTime %></td>
       </tr>
   <% end %>
 
