@@ -1,3 +1,5 @@
+require 'csv'
+
 class QueriesController < ApplicationController
   include ApplicationHelper
 
@@ -19,6 +21,7 @@ class QueriesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
+      format.csv { send_data @query.to_csv }
       format.json { render json: @query }
     end
   end
