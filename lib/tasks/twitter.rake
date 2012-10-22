@@ -13,36 +13,49 @@ task :tweets => :environment do
     config.auth_method = :oauth
   end
 
-  keywords = "go blue"
-
-  @query = Query.new(:page => 1, :q => keywords, :rpp => 100)
-  if @query.save
-    puts "Query:" + @query.q
-
-    client = TweetStream::Client.new
-    client.track(keywords) do |status|
-      begin
-        @tweet = @query.tweets.build(
-            :message => status.text,
-            :userId  => status.user.id,
-            :screenname => status.user.screen_name,
-            :message => status.text,
-            :statusId => status.id,
-            :messageTime => status.created_at
-        )
-        if @tweet.save
-          puts @tweet.message
-        else
-          puts @tweet.errors[:name]
-        end
-      rescue => e
-        puts e.message
-      end
-    end
-  else
-    puts @query.errors[:name]
+  q = Query.last
+  t = Thread.new do
+    Stream(q)
   end
 
-
+  loop do
+    sleep 10
+    newQ = Query.last
+    if(newQ.id > q.id)
+      puts "***Found New Query:" + newQ.q
+      q = newQ
+      Thread.kill(t)
+      puts "***killed old query"
+      sleep 10
+      puts "***starting new query"
+      t = Thread.new do
+        Stream(q)
+      end
+      puts "***new query started"
+    end
+  end
 end
 
+
+def Stream(query)
+  client = TweetStream::Client.new
+  client.track(query.q) do |status|
+    begin
+      @tweet = query.tweets.build(
+          :message => status.text,
+          :userId  => status.user.id,
+          :screenname => status.user.screen_name,
+          :message => status.text,
+          :statusId => status.id,
+          :messageTime => status.created_at
+      )
+      if @tweet.save
+        puts @tweet.message
+      else
+        puts @tweet.errors[:name]
+      end
+    rescue => e
+      puts e.message
+    end
+  end
+end
