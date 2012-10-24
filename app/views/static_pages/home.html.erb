@@ -1,19 +1,5 @@
-
-MaxId: <%= @max_id %>, Results: <%= @tweets.count %>, Pages <%= @counter %>
-<table>
-  <tr>
-    <th>From</th>
-    <th>Text</th>
-    <th>Time</th>
-  </tr>
-
-  <% @tweets.each do |tweet| %>
-      <tr>
-        <td><%= tweet["from_user"] %></td>
-        <td><%= tweet["text"] %></td>
-        <td><%= tweet["created_at"] %></td>
-      </tr>
-  <% end %>
-
-
-</table>
+<%= form_tag("/static_pages/home", :method => "get") do %>
+    <%= label_tag(:query_id, "Query Id:") %>
+    <%= text_field_tag(:query_id) %>
+    <%= submit_tag("Enqueue") %>
+<% end %>

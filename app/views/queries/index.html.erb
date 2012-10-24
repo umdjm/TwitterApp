@@ -2,6 +2,7 @@
 
 <table>
   <tr>
+    <th>Id</th>
     <th>Q</th>
     <th>Rpp</th>
     <th>Max</th>
@@ -13,6 +14,7 @@
 
 <% @queries.each do |query| %>
   <tr>
+    <td><%= query.id %></td>
     <td><%= query.q %></td>
     <td><%= query.rpp %></td>
     <td><%= query.max_id %></td>

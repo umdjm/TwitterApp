@@ -4,6 +4,7 @@ TwitterApp::Application.routes.draw do
   resources :tweets
 
   get "static_pages/home"
+  mount Resque::Server, :at => "/resque"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
